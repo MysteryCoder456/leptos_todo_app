@@ -22,8 +22,13 @@ impl Todo {
 struct Todos(Vec<Todo>);
 
 impl Todos {
-    fn insert(&mut self, new_todo: Todo) {
+    fn push(&mut self, new_todo: Todo) {
         self.0.push(new_todo);
+    }
+
+    fn remove(&mut self, id: &Uuid) -> Option<Todo> {
+        let idx = self.0.iter().position(|t| t.id == *id)?;
+        Some(self.0.remove(idx))
     }
 }
 
@@ -34,8 +39,8 @@ fn TodoApp(cx: Scope) -> impl IntoView {
 
     // TODO: Fetch todos from some storage
     set_todos.update(|t| {
-        t.insert(Todo::new(cx, "Hello World", false));
-        t.insert(Todo::new(cx, "Learn Leptos", true));
+        t.push(Todo::new(cx, "Hello World", false));
+        t.push(Todo::new(cx, "Learn Leptos", true));
     });
 
     view! { cx,
@@ -54,6 +59,11 @@ fn TodoApp(cx: Scope) -> impl IntoView {
 }
 
 #[component]
+fn AddTodoComponent(cx: Scope) -> impl IntoView {
+    todo!()
+}
+
+#[component]
 fn TodoComponent(cx: Scope, todo: Todo) -> impl IntoView {
     let set_todos = use_context::<WriteSignal<Todos>>(cx).unwrap();
 
@@ -63,9 +73,9 @@ fn TodoComponent(cx: Scope, todo: Todo) -> impl IntoView {
         // Move the todo to the end of the list
         if todo.completed.get_untracked() {
             set_todos.update(|set_todos| {
-                let idx = set_todos.0.iter().position(|t| t.id == todo.id).unwrap();
-                let todo = set_todos.0.remove(idx);
-                set_todos.0.push(todo);
+                if let Some(t) = set_todos.remove(&todo.id) {
+                    set_todos.push(t);
+                }
             });
         }
     };
