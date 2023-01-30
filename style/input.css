@@ -1,0 +1,8 @@
+.todo {
+  @apply p-4 my-3 flex rounded-xl drop-shadow-md bg-neutral-700;
+}
+
+.completed {
+  @apply text-zinc-400;
+  text-decoration: line-through;
+}

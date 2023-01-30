@@ -87,8 +87,8 @@ fn TodoComponent(cx: Scope, todo: Todo) -> impl IntoView {
     };
 
     view! { cx,
-        <div class="p-4 my-3 rounded-xl drop-shadow-md bg-neutral-700 flex">
-            <p class="w-full text-lg" class:completed={move || todo.completed.get()}>
+        <div class="todo" class:completed={move || todo.completed.get()}>
+            <p class="w-full text-lg">
                 {move || todo.content.get()}
             </p>
             <input type="checkbox" prop:checked={move || todo.completed.get()} on:input=toggle_completed class="scale-125 mr-2" />
