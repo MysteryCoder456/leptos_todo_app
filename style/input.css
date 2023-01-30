@@ -1,5 +1,5 @@
 .todo {
-  @apply p-4 my-3 flex rounded-xl drop-shadow-md bg-neutral-700;
+  @apply p-4 my-4 flex rounded-xl drop-shadow-md bg-neutral-700;
 }
 
 .completed {
