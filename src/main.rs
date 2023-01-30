@@ -1,4 +1,6 @@
 use leptos::*;
+use leptos_meta::*;
+
 use uuid::Uuid;
 
 #[derive(Clone, Debug)]
@@ -34,6 +36,8 @@ impl Todos {
 
 #[component]
 fn TodoApp(cx: Scope) -> impl IntoView {
+    provide_meta_context(cx);
+
     let (todos, set_todos) = create_signal(cx, Todos::default());
     provide_context(cx, set_todos);
 
@@ -44,6 +48,8 @@ fn TodoApp(cx: Scope) -> impl IntoView {
     });
 
     view! { cx,
+        <Title text="Leptos Todos" />
+
         <main class="w-3/5 mx-auto bg-slate-100 dark:bg-zinc-800 px-12 py-8 mt-8 rounded-lg drop-shadow-xl">
             <h1 class="text-3xl text-center">"Leptos Todos!"</h1>
 
@@ -94,5 +100,6 @@ fn main() {
     console_error_panic_hook::set_once();
     _ = console_log::init_with_level(log::Level::Debug);
     console_error_panic_hook::set_once();
+
     leptos::mount_to_body(|cx| view! { cx, <TodoApp /> });
 }
