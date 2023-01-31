@@ -52,6 +52,7 @@ fn TodoApp(cx: Scope) -> impl IntoView {
 
         <main class="w-3/5 mx-auto bg-slate-100 dark:bg-zinc-800 px-12 py-8 mt-8 rounded-lg drop-shadow-xl">
             <h1 class="text-3xl text-center">"Leptos Todos!"</h1>
+            <AddTodoComponent />
 
             <div class="pt-3">
                 <For
@@ -66,7 +67,17 @@ fn TodoApp(cx: Scope) -> impl IntoView {
 
 #[component]
 fn AddTodoComponent(cx: Scope) -> impl IntoView {
-    todo!()
+    let (new_todo, set_new_todo) = create_signal(cx, String::new());
+
+    let input_changed = move |e| {
+        todo!();
+    };
+
+    view! { cx,
+        <div class="mt-5 flex">
+            <input type="text" placeholder="New Todo" class="add-todo-input" on:input=input_changed />
+        </div>
+    }
 }
 
 #[component]
@@ -91,7 +102,7 @@ fn TodoComponent(cx: Scope, todo: Todo) -> impl IntoView {
             <p class="w-full text-lg">
                 {move || todo.content.get()}
             </p>
-            <input type="checkbox" prop:checked={move || todo.completed.get()} on:input=toggle_completed class="scale-125 mr-2" />
+            <input type="checkbox" checked={move || todo.completed.get()} on:input=toggle_completed class="scale-125 mr-2" />
         </div>
     }
 }

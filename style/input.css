@@ -1,3 +1,15 @@
+.add-todo-input {
+  @apply mx-auto px-3 py-5 rounded-md bg-neutral-700 w-3/5 h-8 drop-shadow-lg outline outline-indigo-800;
+
+  outline-width: 2.5px;
+  outline-offset: 2px;
+  transition: outline-offset 0.2s ease-out;
+}
+
+.add-todo-input:hover {
+  outline-offset: 6px;
+}
+
 .todo {
   @apply p-4 my-4 flex rounded-xl drop-shadow-md bg-neutral-700;
 }
