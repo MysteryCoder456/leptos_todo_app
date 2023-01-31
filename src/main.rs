@@ -82,11 +82,12 @@ fn AddTodoComponent(cx: Scope) -> impl IntoView {
     };
 
     let add_todo = move |_| {
-        let new_todo_content = new_todo.get_untracked();
+        let content = new_todo.get_untracked();
+        let content = content.trim();
 
-        if !new_todo_content.is_empty() {
+        if !content.is_empty() {
             // Add the new todo to todo list
-            let todo = Todo::new(cx, &new_todo_content, false);
+            let todo = Todo::new(cx, &content, false);
             set_todos.update(|t| t.add(todo));
 
             // Set input value to empty string
