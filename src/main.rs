@@ -24,6 +24,10 @@ impl Todo {
 struct Todos(Vec<Todo>);
 
 impl Todos {
+    fn add(&mut self, new_todo: Todo) {
+        self.0.insert(0, new_todo);
+    }
+
     fn push(&mut self, new_todo: Todo) {
         self.0.push(new_todo);
     }
@@ -69,13 +73,34 @@ fn TodoApp(cx: Scope) -> impl IntoView {
 fn AddTodoComponent(cx: Scope) -> impl IntoView {
     let (new_todo, set_new_todo) = create_signal(cx, String::new());
 
-    let input_changed = move |e| {
-        todo!();
+    let set_todos = use_context::<WriteSignal<Todos>>(cx).unwrap();
+    let input_ref = NodeRef::<HtmlElement<Input>>::new(cx);
+
+    let input_changed = move |_| {
+        let node = input_ref.get().expect("Add Todo input element not loaded");
+        set_new_todo.set(node.value());
+    };
+
+    let add_todo = move |_| {
+        // Add the new todo to todo list
+        let todo = Todo::new(cx, &new_todo.get_untracked(), false);
+        set_todos.update(|t| t.add(todo));
+
+        // Set input value to empty string
+        set_new_todo.set(String::new());
     };
 
     view! { cx,
-        <div class="mt-5 flex">
-            <input type="text" placeholder="New Todo" class="add-todo-input" on:input=input_changed />
+        <div class="mt-5 grid grid-cols-5 gap-4">
+            <input
+                _ref=input_ref
+                prop:value={move || new_todo.get()}
+                type="text"
+                placeholder="New Todo"
+                class="add-todo-input"
+                on:input=input_changed
+            />
+            <button class="rounded-md bg-indigo-800 hover:drop-shadow-lg" on:click=add_todo>"Add"</button>
         </div>
     }
 }
@@ -102,7 +127,12 @@ fn TodoComponent(cx: Scope, todo: Todo) -> impl IntoView {
             <p class="w-full text-lg">
                 {move || todo.content.get()}
             </p>
-            <input type="checkbox" checked={move || todo.completed.get()} on:input=toggle_completed class="scale-125 mr-2" />
+            <input
+                type="checkbox"
+                prop:checked={move || todo.completed.get()}
+                on:input=toggle_completed
+                class="scale-125 mr-2"
+            />
         </div>
     }
 }
