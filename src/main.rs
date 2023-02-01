@@ -105,7 +105,7 @@ fn AddTodoComponent(cx: Scope) -> impl IntoView {
                 class="add-todo-input"
                 on:input=input_changed
             />
-            <button class="rounded-md bg-indigo-800 hover:drop-shadow-lg" on:click=add_todo>"Add"</button>
+            <button class="add-todo-submit" on:click=add_todo>"Add"</button>
         </div>
     }
 }

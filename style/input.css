@@ -1,5 +1,5 @@
 .add-todo-input {
-  @apply mx-auto px-3 py-5 rounded-md bg-neutral-700 w-full col-span-4 h-8 drop-shadow-lg outline outline-indigo-800;
+  @apply mx-auto px-3 py-5 rounded-md bg-neutral-200 dark:bg-neutral-700 w-full col-span-4 h-8 drop-shadow-lg outline outline-indigo-600 dark:outline-indigo-800;
 
   outline-width: 2.5px;
   outline-offset: 2px;
@@ -10,8 +10,16 @@
   outline-offset: 6px;
 }
 
+.add-todo-submit {
+  @apply rounded-md bg-indigo-600 dark:bg-indigo-800;
+}
+
+.add-todo-submit:hover {
+  @apply drop-shadow-lg;
+}
+
 .todo {
-  @apply p-4 my-4 flex rounded-xl drop-shadow-md bg-neutral-700;
+  @apply p-4 my-4 flex rounded-xl drop-shadow-md bg-neutral-200 dark:bg-neutral-700;
 }
 
 .completed {
