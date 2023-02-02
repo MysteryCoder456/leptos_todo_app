@@ -54,7 +54,7 @@ fn TodoApp(cx: Scope) -> impl IntoView {
     view! { cx,
         <Title text="Leptos Todos" />
 
-        <main class="w-3/5 mx-auto bg-slate-100 dark:bg-zinc-800 px-12 py-8 mt-8 rounded-lg drop-shadow-xl">
+        <main>
             <h1 class="text-3xl text-center">"Leptos Todos!"</h1>
             <AddTodoComponent />
 
@@ -129,14 +129,14 @@ fn TodoComponent(cx: Scope, todo: Todo) -> impl IntoView {
 
     view! { cx,
         <div class="todo" class:completed={move || todo.completed.get()}>
-            <p class="w-full text-lg">
+            <p class="w-full text-lg text-clip overflow-hidden">
                 {move || todo.content.get()}
             </p>
             <input
                 type="checkbox"
                 prop:checked={move || todo.completed.get()}
                 on:input=toggle_completed
-                class="scale-125 mr-2"
+                class="scale-125 ml-5 mr-2"
             />
         </div>
     }

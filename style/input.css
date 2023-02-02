@@ -1,3 +1,7 @@
+main {
+  @apply sm:w-11/12 md:w-9/12 lg:w-3/5 mx-auto bg-slate-100 dark:bg-zinc-800 px-12 py-8 mt-8 rounded-lg drop-shadow-xl;
+}
+
 .add-todo-input {
   @apply mx-auto px-3 py-5 rounded-md bg-neutral-200 dark:bg-neutral-700 w-full col-span-4 h-8 drop-shadow-lg outline outline-indigo-600 dark:outline-indigo-800;
 
