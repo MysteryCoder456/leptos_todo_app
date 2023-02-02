@@ -31,7 +31,7 @@ fn TodoApp(cx: Scope) -> impl IntoView {
                 <For
                     each=move || todos.get().get_todos()
                     key=|todo| todo.id
-                    view=move |todo| view! { cx, <TodoComponent todo=todo.clone() /> }
+                    view=move |todo| view! { cx, <TodoComponent todo=todo /> }
                 />
             </div>
         </main>
