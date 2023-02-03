@@ -4,18 +4,12 @@ use crate::models::{Todo, Todos};
 
 #[component]
 pub fn AddTodoComponent(cx: Scope) -> impl IntoView {
-    let (new_todo, set_new_todo) = create_signal(cx, String::new());
-
     let set_todos = use_context::<WriteSignal<Todos>>(cx).unwrap();
     let input_ref = NodeRef::<HtmlElement<Input>>::new(cx);
 
-    let input_changed = move |_| {
-        let node = input_ref.get().expect("Add Todo input element not loaded");
-        set_new_todo.set(node.value());
-    };
-
     let add_todo = move |_| {
-        let content = new_todo.get_untracked();
+        let input_node = input_ref.get().expect("Add Todo input element not loaded");
+        let content = input_node.value();
         let content = content.trim();
 
         if !content.is_empty() {
@@ -24,7 +18,7 @@ pub fn AddTodoComponent(cx: Scope) -> impl IntoView {
             set_todos.update(|t| t.add(todo));
 
             // Set input value to empty string
-            set_new_todo.set(String::new());
+            input_node.set_value("");
         }
     };
 
@@ -32,11 +26,9 @@ pub fn AddTodoComponent(cx: Scope) -> impl IntoView {
         <div class="mt-5 grid grid-cols-5 gap-4">
             <input
                 _ref=input_ref
-                prop:value={move || new_todo.get()}
                 type="text"
                 placeholder="New Todo"
                 class="add-todo-input"
-                on:input=input_changed
             />
             <button class="add-todo-submit" on:click=add_todo>"Add"</button>
         </div>
