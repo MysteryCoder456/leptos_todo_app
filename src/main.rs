@@ -31,6 +31,25 @@ fn TodoApp(cx: Scope) -> impl IntoView {
         }
     });
 
+    // Listen for changes to Todos and update in local storage
+    create_effect(cx, move |_| {
+        if let Ok(Some(storage)) = window().local_storage() {
+            let items = todos
+                .get()
+                .get_todos()
+                .iter()
+                .map(|t| TodoSerialized {
+                    id: t.id.to_string(),
+                    content: t.content.get(),
+                    completed: t.completed.get(),
+                })
+                .collect::<Vec<_>>();
+
+            let items_serialized = ron::to_string(&items).unwrap();
+            storage.set_item("TODOS", &items_serialized).unwrap();
+        }
+    });
+
     view! { cx,
         <Title text="Leptos Todos" />
 

@@ -25,20 +25,6 @@ pub fn AddTodoComponent(cx: Scope) -> impl IntoView {
 
             // Set input value to empty string
             input_node.set_value("");
-
-            // Save the new todo in local storage
-            if let Ok(Some(storage)) = window().local_storage() {
-                let mut existing_items: Vec<TodoSerialized> =
-                    if let Ok(Some(items_str)) = storage.get_item("TODOS") {
-                        ron::from_str(&items_str).unwrap_or_default()
-                    } else {
-                        Vec::new()
-                    };
-
-                existing_items.insert(0, todo_serialized);
-                let items_serialized = ron::to_string(&existing_items).unwrap();
-                storage.set_item("TODOS", &items_serialized).unwrap();
-            }
         }
     };
 
