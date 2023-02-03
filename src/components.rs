@@ -1,6 +1,6 @@
 use leptos::*;
 
-use crate::models::{Todo, Todos};
+use crate::models::*;
 
 #[component]
 pub fn AddTodoComponent(cx: Scope) -> impl IntoView {
@@ -13,12 +13,32 @@ pub fn AddTodoComponent(cx: Scope) -> impl IntoView {
         let content = content.trim();
 
         if !content.is_empty() {
-            // Add the new todo to todo list
             let todo = Todo::new(cx, &content, false);
+            let todo_serialized = TodoSerialized {
+                id: todo.id.to_string(),
+                content: content.to_owned(),
+                completed: false,
+            };
+
+            // Add the new todo to todo list
             set_todos.update(|t| t.add(todo));
 
             // Set input value to empty string
             input_node.set_value("");
+
+            // Save the new todo in local storage
+            if let Ok(Some(storage)) = window().local_storage() {
+                let mut existing_items: Vec<TodoSerialized> =
+                    if let Ok(Some(items_str)) = storage.get_item("TODOS") {
+                        ron::from_str(&items_str).unwrap_or_default()
+                    } else {
+                        Vec::new()
+                    };
+
+                existing_items.insert(0, todo_serialized);
+                let items_serialized = ron::to_string(&existing_items).unwrap();
+                storage.set_item("TODOS", &items_serialized).unwrap();
+            }
         }
     };
 
