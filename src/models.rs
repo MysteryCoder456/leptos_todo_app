@@ -1,4 +1,5 @@
-use leptos::{create_rw_signal, RwSignal, Scope};
+use leptos::*;
+use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 #[derive(Clone, Debug)]
@@ -16,6 +17,13 @@ impl Todo {
             completed: create_rw_signal(cx, completed),
         }
     }
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct TodoSerialized {
+    pub id: String,
+    pub content: String,
+    pub completed: bool,
 }
 
 #[derive(Default, Clone)]

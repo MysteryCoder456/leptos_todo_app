@@ -5,7 +5,7 @@ mod components;
 mod models;
 
 use components::*;
-use models::{Todo, Todos};
+use models::*;
 
 #[component]
 fn TodoApp(cx: Scope) -> impl IntoView {
@@ -14,10 +14,21 @@ fn TodoApp(cx: Scope) -> impl IntoView {
     let (todos, set_todos) = create_signal(cx, Todos::default());
     provide_context(cx, set_todos);
 
-    // TODO: Fetch todos from some storage
+    // Fetch todos from local storage
     set_todos.update(|t| {
-        t.push(Todo::new(cx, "Hello World", false));
-        t.push(Todo::new(cx, "Learn Leptos", true));
+        if let Ok(Some(storage)) = window().local_storage() {
+            if let Ok(Some(items_str)) = storage.get_item("TODOS") {
+                if let Ok(items) = ron::from_str::<Vec<TodoSerialized>>(&items_str) {
+                    for item in items {
+                        t.push(Todo {
+                            id: uuid::Uuid::parse_str(&item.id).unwrap(),
+                            content: create_rw_signal(cx, item.content),
+                            completed: create_rw_signal(cx, item.completed),
+                        });
+                    }
+                }
+            }
+        }
     });
 
     view! { cx,
