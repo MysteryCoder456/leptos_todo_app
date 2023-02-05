@@ -14,16 +14,7 @@ pub fn AddTodoComponent(cx: Scope) -> impl IntoView {
 
         if !content.is_empty() {
             let todo = Todo::new(cx, &content, false);
-            let todo_serialized = TodoSerialized {
-                id: todo.id.to_string(),
-                content: content.to_owned(),
-                completed: false,
-            };
-
-            // Add the new todo to todo list
             set_todos.update(|t| t.add(todo));
-
-            // Set input value to empty string
             input_node.set_value("");
         }
     };

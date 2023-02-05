@@ -5,7 +5,7 @@ fn main() {
     println!("cargo:rerun-if-changed=style/input.css");
 
     // Calling Tailwind CLI
-    let output = std::process::Command::new("tailwind")
+    let output = std::process::Command::new("tailwindcss")
         .arg("-i")
         .arg("./style/input.css")
         .arg("-o")
