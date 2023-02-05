@@ -5,6 +5,14 @@ A simple toy project to mess around with Leptos and Rust WASM.
 
 ## Setup
 
+### Using Docker
+
+If you have Docker and docker-compose installed, you can simply run
+`docker compose up --build` and wait a few minutes. After it finishes,
+you can open a browser at `http://localhost:8080` to see the application.
+
+### Manually
+
 This project will work using the Stable Rust Toolchain as well, contrary
 to most examples on the [official Leptos repository](https://github.com/leptos-rs/leptos).
 
